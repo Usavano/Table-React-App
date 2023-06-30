@@ -1,6 +1,8 @@
 import Row from './Row';
 import './Table.css';
 import { Pagination } from '@mui/material';
+import DeleteModal from './DeleteModal';
+import { useState } from 'react';
 
 function Table({
   records,
@@ -10,6 +12,8 @@ function Table({
   recordsPerPage,
   handlePages,
 }) {
+  const [delModalActive, setDelModalActive] = useState(false);
+
   const filteredData = records.filter((obj) => {
     return Object.values(obj).some((val) => {
       return val.toString().toLowerCase().includes(srchVal.toLowerCase());
@@ -20,6 +24,7 @@ function Table({
 
   return (
     <div className='table-container'>
+      <DeleteModal active={delModalActive} setActive={setDelModalActive} />
       <table className='table'>
         <thead className='table__head theader'>
           <tr className='theader__row'>
@@ -37,7 +42,9 @@ function Table({
         <tbody className='table_body tbody'>
           {filteredData
             .map((car) => {
-              return <Row {...car} key={car.id} />;
+              return (
+                <Row {...car} key={car.id} setActive={setDelModalActive} />
+              );
             })
             .slice(firstRowIndex, lastRowIndex)}
         </tbody>

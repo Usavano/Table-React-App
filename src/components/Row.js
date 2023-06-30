@@ -3,12 +3,19 @@ import './Row.css';
 function Row({
   car,
   car_model,
+  car_vin,
   car_color,
   car_model_year,
-  car_vin,
   price,
   availability,
+  setActive,
 }) {
+  const showModals = (e) => {
+    if (e.target.value === 'Delete') {
+      setActive(true);
+    }
+  };
+
   return (
     <tr className='tbody__row'>
       <td className='tbody__item'>{car}</td>
@@ -20,7 +27,12 @@ function Row({
       <td className='tbody__item'>
         {availability ? 'Available' : 'Not available'}
       </td>
-      <td className='tbody__item'>{''}</td>
+      <td className='tbody__item'>
+        <select onChange={showModals}>
+          <option>Edit</option>
+          <option>Delete</option>
+        </select>
+      </td>
     </tr>
   );
 }
