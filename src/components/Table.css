@@ -1,0 +1,33 @@
+/* Main Styles */
+.table {
+  font-family: 'Roboto', sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+tr:hover {
+  background-color: #f1f1f1;
+}
+
+td {
+  font-size: 1.1rem;
+  border-bottom: 1px solid #b1b1b1;
+  border-right: 1px solid #b1b1b1;
+}
+
+.theader__item {
+  font-size: 1.25rem;
+  text-align: center;
+  vertical-align: middle;
+  padding: 0.8rem 0 0.8rem;
+  background-color: #e9b424;
+  color: #000;
+}
+
+.theader__item:nth-child(1) {
+  border-top-left-radius: 10px;
+}
+
+.theader__item:nth-child(8) {
+  border-top-right-radius: 10px;
+}
