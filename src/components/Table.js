@@ -1,7 +1,7 @@
 import Row from './Row';
 import './Table.css';
 
-function Table({ records }) {
+function Table({ records, srchVal, firstRowIndex, lastRowIndex }) {
   return (
     <table className='table'>
       <thead className='table__head theader'>
@@ -18,9 +18,19 @@ function Table({ records }) {
       </thead>
 
       <tbody className='table_body tbody'>
-        {records.map((car) => {
-          return <Row {...car} key={car.id} />;
-        })}
+        {records
+          .filter((obj) => {
+            return Object.values(obj).some((val) => {
+              return val
+                .toString()
+                .toLowerCase()
+                .includes(srchVal.toLowerCase());
+            });
+          })
+          .map((car) => {
+            return <Row {...car} key={car.id} />;
+          })
+          .slice(firstRowIndex, lastRowIndex)}
       </tbody>
     </table>
   );
