@@ -6,25 +6,39 @@ import { useState } from 'react';
 
 function Table({
   records,
-  srchVal,
   firstRowIndex,
   lastRowIndex,
   recordsPerPage,
   handlePages,
 }) {
   const [delModalActive, setDelModalActive] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
 
   const filteredData = records.filter((obj) => {
     return Object.values(obj).some((val) => {
-      return val.toString().toLowerCase().includes(srchVal.toLowerCase());
+      return val.toString().toLowerCase().includes(searchTerm.toLowerCase());
     });
   });
 
   const numberOfPages = Math.ceil(filteredData.length / recordsPerPage);
 
+  const handleSearchValue = (e) => {
+    const searchValue = e.target.value;
+    if (searchValue !== null) {
+      setSearchTerm(searchValue);
+    }
+  };
+
   return (
     <div className='table-container'>
       <DeleteModal active={delModalActive} setActive={setDelModalActive} />
+      <input
+        type='text'
+        placeholder='Search..'
+        autoComplete='false'
+        onInput={handleSearchValue}
+        className='searchBar'
+      />
       <table className='table'>
         <thead className='table__head theader'>
           <tr className='theader__row'>
@@ -43,7 +57,7 @@ function Table({
           {filteredData
             .map((car) => {
               return (
-                <Row {...car} key={car.id} setActive={setDelModalActive} />
+                <Row {...car} key={car.id} setDelActive={setDelModalActive} />
               );
             })
             .slice(firstRowIndex, lastRowIndex)}

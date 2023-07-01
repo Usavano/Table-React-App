@@ -4,14 +4,5 @@
   gap: 25px;
   width: 100%;
   max-width: 1500px;
-}
-
-.searchBar {
-  width: 420px;
-  padding: 0.6rem;
-  font-size: 1.3rem;
-  font-family: 'Roboto', sans-serif;
-  border-radius: 8px;
-  border-style: solid;
-  border-color: rgb(233, 233, 233);
+  position: relative;
 }

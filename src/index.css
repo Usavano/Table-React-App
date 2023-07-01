@@ -70,5 +70,4 @@ body {
   transition: all 0.3s linear;
   display: grid;
   place-items: center;
-  position: relative;
 }

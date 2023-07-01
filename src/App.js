@@ -6,7 +6,6 @@ function App() {
   const [carsData, setCarsData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [recordsPerPage] = useState(15);
-  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     fetch('https://myfakeapi.com/api/cars/')
@@ -21,25 +20,10 @@ function App() {
     setCurrentPage(p);
   };
 
-  const handleSearchValue = (e) => {
-    const searchValue = e.target.value;
-    if (searchValue !== null) {
-      setSearchTerm(searchValue);
-    }
-  };
-
   return (
     <div className='app'>
-      <input
-        type='text'
-        placeholder='Search..'
-        autoComplete='false'
-        onInput={handleSearchValue}
-        className='searchBar'
-      />
       <Table
         records={carsData}
-        srchVal={searchTerm}
         firstRowIndex={firstRowIndex}
         lastRowIndex={lastRowIndex}
         recordsPerPage={recordsPerPage}

@@ -8,11 +8,11 @@ function Row({
   car_model_year,
   price,
   availability,
-  setActive,
+  setDelActive,
 }) {
   const showModals = (e) => {
     if (e.target.value === 'Delete') {
-      setActive(true);
+      setDelActive(true);
     }
   };
 
