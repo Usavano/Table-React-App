@@ -1,6 +1,6 @@
 import './DeleteModal.css';
 
-function DeleteModal({ active, setActive }) {
+function DeleteModal({ active, setActive, removeData }) {
   return (
     <div className={`delete-modal ${active ? 'active' : ''}`}>
       <div className='delete-modal__body'>
@@ -9,7 +9,15 @@ function DeleteModal({ active, setActive }) {
           Do you really want to delete the data?
         </p>
         <div className='delete-modal__btn-container'>
-          <button className='delete-modal__btn_del modal-btn'>Delete</button>
+          <button
+            className='delete-modal__btn_del modal-btn'
+            onClick={() => {
+              setActive(false);
+              removeData();
+            }}
+          >
+            Delete
+          </button>
           <button
             className='delete-modal__btn_cls modal-btn'
             onClick={() => {

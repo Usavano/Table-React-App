@@ -6,12 +6,24 @@ function App() {
   const [carsData, setCarsData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [recordsPerPage] = useState(15);
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     fetch('https://myfakeapi.com/api/cars/')
       .then((response) => response.json())
-      .then((data) => setCarsData(data.cars));
+      .then((data) => setCarsData(data.cars))
+      .catch((error) => setError(error.message))
+      .finally(() => setIsLoading(false));
   }, []);
+
+  if (isLoading) {
+    return <h1>Loading...</h1>;
+  }
+
+  if (error) {
+    return <h1>Error: {error}</h1>;
+  }
 
   const lastRowIndex = currentPage * recordsPerPage;
   const firstRowIndex = lastRowIndex - recordsPerPage;

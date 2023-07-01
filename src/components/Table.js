@@ -13,25 +13,38 @@ function Table({
 }) {
   const [delModalActive, setDelModalActive] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  const [searchStatus, setSearchStatus] = useState(false);
+  const [data, setData] = useState(records);
+  const [rowKey, setRowKey] = useState(null);
 
-  const filteredData = records.filter((obj) => {
-    return Object.values(obj).some((val) => {
-      return val.toString().toLowerCase().includes(searchTerm.toLowerCase());
-    });
-  });
+  //   const filteredData = data.filter((obj) => {
+  //     return Object.values(obj).some((val) => {
+  //       return val.toString().toLowerCase().includes(searchTerm.toLowerCase());
+  //     });
+  //   });
 
-  const numberOfPages = Math.ceil(filteredData.length / recordsPerPage);
+  const numberOfPages = Math.ceil(data.length / recordsPerPage);
 
   const handleSearchValue = (e) => {
     const searchValue = e.target.value;
     if (searchValue !== null) {
       setSearchTerm(searchValue);
+      setSearchStatus(true);
     }
+  };
+
+  const removeData = () => {
+    const newData = records.filter((el) => el.id !== rowKey);
+    setData(newData);
   };
 
   return (
     <div className='table-container'>
-      <DeleteModal active={delModalActive} setActive={setDelModalActive} />
+      <DeleteModal
+        active={delModalActive}
+        setActive={setDelModalActive}
+        removeData={removeData}
+      />
       <input
         type='text'
         placeholder='Search..'
@@ -54,10 +67,25 @@ function Table({
         </thead>
 
         <tbody className='table_body tbody'>
-          {filteredData
+          {(searchStatus
+            ? data.filter((obj) => {
+                return Object.values(obj).some((val) => {
+                  return val
+                    .toString()
+                    .toLowerCase()
+                    .includes(searchTerm.toLowerCase());
+                });
+              })
+            : data
+          )
             .map((car) => {
               return (
-                <Row {...car} key={car.id} setDelActive={setDelModalActive} />
+                <Row
+                  {...car}
+                  key={car.id}
+                  setDelActive={setDelModalActive}
+                  setRowKey={setRowKey}
+                />
               );
             })
             .slice(firstRowIndex, lastRowIndex)}

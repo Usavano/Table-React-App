@@ -7,12 +7,16 @@ function Row({
   car_color,
   car_model_year,
   price,
+  id,
   availability,
   setDelActive,
+  setRowKey,
 }) {
   const showModals = (e) => {
     if (e.target.value === 'Delete') {
       setDelActive(true);
+      setRowKey(id);
+      console.log(id);
     }
   };
 
@@ -28,9 +32,12 @@ function Row({
         {availability ? 'Available' : 'Not available'}
       </td>
       <td className='tbody__item'>
-        <select onChange={showModals}>
-          <option>Edit</option>
-          <option>Delete</option>
+        <select onChange={showModals} className='actions-list'>
+          <option selected className='actions-list__item'>
+            Choose on...
+          </option>
+          <option className='actions-list__item'>Edit</option>
+          <option className='actions-list__item'>Delete</option>
         </select>
       </td>
     </tr>
