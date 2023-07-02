@@ -17,29 +17,31 @@ function Table({
   const [data, setData] = useState(records);
   const [rowKey, setRowKey] = useState(null);
 
-  //   const filteredData = data.filter((obj) => {
-  //     return Object.values(obj).some((val) => {
-  //       return val.toString().toLowerCase().includes(searchTerm.toLowerCase());
-  //     });
-  //   });
-
-  const numberOfPages = Math.ceil(data.length / recordsPerPage);
-
   const handleSearchValue = (e) => {
     const searchValue = e.target.value;
-    if (searchValue !== null) {
-      setSearchTerm(searchValue);
-      setSearchStatus(true);
-    }
+    setSearchTerm(searchValue);
+    setSearchStatus(true);
   };
 
   const removeData = () => {
-    const newData = records.filter((el) => el.id !== rowKey);
+    let newData = JSON.parse(localStorage.getItem('mainData'));
+    newData = records.filter((el) => el.id !== rowKey);
+    localStorage.setItem('mainData', JSON.stringify(newData));
     setData(newData);
   };
 
+  const filteredData = data.filter((obj) => {
+    return Object.values(obj).some((val) => {
+      return val.toString().toLowerCase().includes(searchTerm.toLowerCase());
+    });
+  });
+
+  let numOfPages = searchStatus
+    ? Math.ceil(filteredData.length / recordsPerPage)
+    : Math.ceil(data.length / recordsPerPage);
+
   return (
-    <div className='table-container'>
+    <>
       <DeleteModal
         active={delModalActive}
         setActive={setDelModalActive}
@@ -49,7 +51,8 @@ function Table({
         type='text'
         placeholder='Search..'
         autoComplete='false'
-        onInput={handleSearchValue}
+        value={searchTerm}
+        onChange={handleSearchValue}
         className='searchBar'
       />
       <table className='table'>
@@ -67,17 +70,7 @@ function Table({
         </thead>
 
         <tbody className='table_body tbody'>
-          {(searchStatus
-            ? data.filter((obj) => {
-                return Object.values(obj).some((val) => {
-                  return val
-                    .toString()
-                    .toLowerCase()
-                    .includes(searchTerm.toLowerCase());
-                });
-              })
-            : data
-          )
+          {(searchStatus ? filteredData : data)
             .map((car) => {
               return (
                 <Row
@@ -92,14 +85,14 @@ function Table({
         </tbody>
       </table>
       <Pagination
-        count={numberOfPages}
+        count={numOfPages}
         onChange={handlePages}
         size='large'
         variant='outlined'
         shape='rounded'
         className='table-container__pagination'
       />
-    </div>
+    </>
   );
 }
 

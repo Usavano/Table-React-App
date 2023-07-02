@@ -10,11 +10,21 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    fetch('https://myfakeapi.com/api/cars/')
-      .then((response) => response.json())
-      .then((data) => setCarsData(data.cars))
-      .catch((error) => setError(error.message))
-      .finally(() => setIsLoading(false));
+    const storedData = localStorage.getItem('mainData');
+
+    if (storedData) {
+      setCarsData(JSON.parse(storedData));
+      setIsLoading(false);
+    } else {
+      fetch('https://myfakeapi.com/api/cars/')
+        .then((response) => response.json())
+        .then((data) => {
+          setCarsData(data.cars);
+          localStorage.setItem('mainData', JSON.stringify(data.cars));
+        })
+        .catch((error) => setError(error.message))
+        .finally(() => setIsLoading(false));
+    }
   }, []);
 
   if (isLoading) {
