@@ -1,8 +1,9 @@
-import Row from './Row';
-import './Table.css';
-import { Pagination } from '@mui/material';
-import DeleteModal from './DeleteModal';
 import { useState } from 'react';
+import { Pagination } from '@mui/material';
+import './Table.css';
+import Row from './Row';
+import DeleteModal from './DeleteModal';
+import EditModal from './EditModal';
 
 function Table({
   records,
@@ -11,11 +12,17 @@ function Table({
   recordsPerPage,
   handlePages,
 }) {
-  const [delModalActive, setDelModalActive] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [searchStatus, setSearchStatus] = useState(false);
   const [data, setData] = useState(records);
-  const [rowKey, setRowKey] = useState(null);
+
+  //   useStates for Modal-Delete
+  const [delModalActive, setDelModalActive] = useState(false);
+  const [rowKeyForDel, setRowKeyForDel] = useState(null);
+
+  //   useStates for Modal-Edit
+  const [editModalActive, setEditModalActive] = useState(false);
+  const [rowKeyForEdit, setRowKeyForEdit] = useState(null);
 
   const handleSearchValue = (e) => {
     const searchValue = e.target.value;
@@ -25,7 +32,7 @@ function Table({
 
   const removeData = () => {
     let newData = JSON.parse(localStorage.getItem('mainData'));
-    newData = records.filter((el) => el.id !== rowKey);
+    newData = records.filter((el) => el.id !== rowKeyForDel);
     localStorage.setItem('mainData', JSON.stringify(newData));
     setData(newData);
   };
@@ -47,6 +54,7 @@ function Table({
         setActive={setDelModalActive}
         removeData={removeData}
       />
+      <EditModal active={editModalActive} setActive={setEditModalActive} />
       <input
         type='text'
         placeholder='Search..'
@@ -77,7 +85,8 @@ function Table({
                   {...car}
                   key={car.id}
                   setDelActive={setDelModalActive}
-                  setRowKey={setRowKey}
+                  setRowKeyForDel={setRowKeyForDel}
+                  setEditActive={setEditModalActive}
                 />
               );
             })
