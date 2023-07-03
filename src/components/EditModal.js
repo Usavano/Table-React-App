@@ -16,17 +16,27 @@ function EditModal({
 
   useEffect(() => {
     setColorInVal(editableRow?.car_color);
+    setPriceInVal(editableRow?.price);
   }, [editableRow]);
+
+  //   useEffect(() => {
+  //     setPriceInVal(editableRow?.price);
+  //   }, [editableRow]);
 
   const handleColorIn = (event) => {
     const value = event.target.value;
-    const regex = /[a-zA-Z]+$/;
-
+    const regex = /^[a-zA-Z]*$/;
     if (regex.test(value)) {
       setColorInVal(value);
     }
+  };
 
-    // setColorInVal(value);
+  const handlePriceIn = (event) => {
+    const value = event.target.value;
+    const regex = /^\$[0-9\s.]*$/;
+    if (regex.test(value)) {
+      setPriceInVal(value);
+    }
   };
 
   return (
@@ -43,7 +53,7 @@ function EditModal({
                 type='text'
                 className='edit-modal__inputs'
                 value={colorInVal}
-                placeholder=''
+                placeholder='Color'
                 onChange={(e) => {
                   handleColorIn(e);
                   handleInputs(e, 'color');
@@ -55,8 +65,10 @@ function EditModal({
               <input
                 type='text'
                 className='edit-modal__inputs edit-modal__inputs_price'
-                placeholder=''
+                value={priceInVal}
+                placeholder='Price'
                 onChange={(e) => {
+                  handlePriceIn(e);
                   handleInputs(e, 'price');
                 }}
               />
