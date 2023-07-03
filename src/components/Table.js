@@ -12,8 +12,11 @@ function Table({
   recordsPerPage,
   handlePages,
 }) {
+  // useStates for search functionality
   const [searchTerm, setSearchTerm] = useState('');
   const [searchStatus, setSearchStatus] = useState(false);
+
+  //   change data
   const [data, setData] = useState(records);
 
   //   useStates for Modal-Delete
@@ -28,7 +31,7 @@ function Table({
   const [editableData, setEditableData] = useState({
     color: '',
     price: '',
-    avail: false,
+    avail: '',
   });
 
   const handleSearchValue = (e) => {
@@ -39,17 +42,26 @@ function Table({
 
   const removeData = () => {
     let newData = JSON.parse(localStorage.getItem('mainData'));
-    newData = records.filter((el) => el.id !== rowKeyForDel);
+    const index = newData.findIndex((el) => el.id === rowKeyForDel);
+    newData.splice(index, 1);
     localStorage.setItem('mainData', JSON.stringify(newData));
     setData(newData);
   };
 
-  const handleEdit = (event) => {
-    event.preventDefault();
-    const index = data.findIndex((el) => el.id === rowKeyForEdit);
-    data[index].car_color = editableData.color;
-    data[index].price = editableData.price;
-    data[index].availability = Boolean(editableData.avail);
+  const handleEdit = () => {
+    let newData = JSON.parse(localStorage.getItem('mainData'));
+    const index = newData.findIndex((el) => el.id === rowKeyForEdit);
+
+    newData[index].car_color = editableData.color || newData[index].car_color;
+    newData[index].price = editableData.price || newData[index].price;
+    newData[index].availability =
+      editableData.avail === ''
+        ? newData[index].availability
+        : editableData.avail === 'true'
+        ? true
+        : false;
+    localStorage.setItem('mainData', JSON.stringify(newData));
+    setData(newData);
   };
 
   const handleInputs = (e, name) => {
@@ -127,7 +139,6 @@ function Table({
         data={data}
         handleEdit={handleEdit}
         handleInputs={handleInputs}
-        editableData={editableData}
       />
     </>
   );

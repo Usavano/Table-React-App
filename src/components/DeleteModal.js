@@ -12,8 +12,8 @@ function DeleteModal({ active, setActive, removeData }) {
           <button
             className='delete-modal__btn_del modal-btn'
             onClick={() => {
-              setActive(false);
               removeData();
+              setActive(false);
             }}
           >
             Delete
