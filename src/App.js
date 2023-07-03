@@ -12,7 +12,7 @@ function App() {
   useEffect(() => {
     const storedData = localStorage.getItem('mainData');
 
-    if (storedData) {
+    if (storedData !== null) {
       setCarsData(JSON.parse(storedData));
       setIsLoading(false);
     } else {

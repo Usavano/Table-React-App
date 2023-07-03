@@ -12,6 +12,7 @@ function Row({
   setDelActive,
   setRowKeyForDel,
   setEditActive,
+  setRowKeyForEdit,
 }) {
   const showModals = (e) => {
     if (e.target.value === 'Delete') {
@@ -20,6 +21,7 @@ function Row({
     }
     if (e.target.value === 'Edit') {
       setEditActive(true);
+      setRowKeyForEdit(id);
     }
   };
 

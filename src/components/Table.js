@@ -24,6 +24,13 @@ function Table({
   const [editModalActive, setEditModalActive] = useState(false);
   const [rowKeyForEdit, setRowKeyForEdit] = useState(null);
 
+  //   editable Parametrs
+  const [editableData, setEditableData] = useState({
+    color: '',
+    price: '',
+    avail: false,
+  });
+
   const handleSearchValue = (e) => {
     const searchValue = e.target.value;
     setSearchTerm(searchValue);
@@ -35,6 +42,18 @@ function Table({
     newData = records.filter((el) => el.id !== rowKeyForDel);
     localStorage.setItem('mainData', JSON.stringify(newData));
     setData(newData);
+  };
+
+  const handleEdit = (event) => {
+    event.preventDefault();
+    const index = data.findIndex((el) => el.id === rowKeyForEdit);
+    data[index].car_color = editableData.color;
+    data[index].price = editableData.price;
+    data[index].availability = Boolean(editableData.avail);
+  };
+
+  const handleInputs = (e, name) => {
+    setEditableData({ ...editableData, [name]: e.target.value });
   };
 
   const filteredData = data.filter((obj) => {
@@ -49,12 +68,6 @@ function Table({
 
   return (
     <>
-      <DeleteModal
-        active={delModalActive}
-        setActive={setDelModalActive}
-        removeData={removeData}
-      />
-      <EditModal active={editModalActive} setActive={setEditModalActive} />
       <input
         type='text'
         placeholder='Search..'
@@ -87,6 +100,7 @@ function Table({
                   setDelActive={setDelModalActive}
                   setRowKeyForDel={setRowKeyForDel}
                   setEditActive={setEditModalActive}
+                  setRowKeyForEdit={setRowKeyForEdit}
                 />
               );
             })
@@ -100,6 +114,20 @@ function Table({
         variant='outlined'
         shape='rounded'
         className='table-container__pagination'
+      />
+      <DeleteModal
+        active={delModalActive}
+        setActive={setDelModalActive}
+        removeData={removeData}
+      />
+      <EditModal
+        active={editModalActive}
+        setActive={setEditModalActive}
+        rowKeyForEdit={rowKeyForEdit}
+        data={data}
+        handleEdit={handleEdit}
+        handleInputs={handleInputs}
+        editableData={editableData}
       />
     </>
   );
