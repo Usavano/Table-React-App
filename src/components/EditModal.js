@@ -19,10 +19,6 @@ function EditModal({
     setPriceInVal(editableRow?.price);
   }, [editableRow]);
 
-  //   useEffect(() => {
-  //     setPriceInVal(editableRow?.price);
-  //   }, [editableRow]);
-
   const handleColorIn = (event) => {
     const value = event.target.value;
     const regex = /^[a-zA-Z]*$/;

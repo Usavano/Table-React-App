@@ -38,7 +38,9 @@ function Row({
       </td>
       <td className='tbody__item'>
         <select onChange={showModals} className='actions-list'>
-          <option className='actions-list__item'>Choose on...</option>
+          <option className='actions-list__item' disabled>
+            Choose on...
+          </option>
           <option className='actions-list__item'>Edit</option>
           <option className='actions-list__item'>Delete</option>
         </select>
