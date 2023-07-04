@@ -62,6 +62,9 @@ function Table({
 
     const index = newData.findIndex((el) => el.id === rowKeyForDel);
     newData.splice(index, 1);
+    newData.forEach((el, index) => {
+      el.id = index + 1;
+    });
 
     localStorage.setItem('mainData', JSON.stringify(newData));
     setData(newData);
